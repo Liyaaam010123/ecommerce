@@ -1,0 +1,763 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Browse Items - Ecommerce Enhanced</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #FBF8F5;
+    }
+    /* Tooltip styling */
+    .tooltip {
+      position: relative;
+      cursor: pointer;
+    }
+    .tooltip .tooltip-text {
+      visibility: hidden;
+      width: 220px;
+      background-color: #3A6EB0;
+      color: #fff;
+      text-align: center;
+      border-radius: 8px;
+      padding: 8px 12px;
+      position: absolute;
+      z-index: 10;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      font-size: 0.875rem;
+      line-height: 1.3;
+      pointer-events: none;
+      box-shadow: 0 4px 8px rgba(58, 110, 176, 0.3);
+    }
+    .tooltip:hover .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+    }
+    /* Scrollbar for product grid */
+    #itemsGrid {
+      scrollbar-width: thin;
+      scrollbar-color: #3A6EB0 #E5E7EB;
+    }
+    #itemsGrid::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    #itemsGrid::-webkit-scrollbar-track {
+      background: #E5E7EB;
+      border-radius: 8px;
+    }
+    #itemsGrid::-webkit-scrollbar-thumb {
+      background-color: #3A6EB0;
+      border-radius: 8px;
+      border: 2px solid #E5E7EB;
+    }
+    /* Button focus */
+    button:focus-visible {
+      outline: 3px solid #6CA0DC;
+      outline-offset: 2px;
+    }
+    /* Badge animation */
+    @keyframes pulseBadge {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+      }
+    }
+    .badge-pulse {
+      animation: pulseBadge 2s infinite;
+    }
+    /* Toast notification */
+    #toast {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background-color: #3A6EB0;
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 8px rgba(58, 110, 176, 0.3);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 9999;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+    }
+    #toast.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+  <!-- Header -->
+  <header class="bg-white shadow-md sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div
+          class="w-12 h-12 rounded-full bg-gradient-to-tr from-[#3A6EB0] to-[#6CA0DC] flex items-center justify-center shadow-lg"
+          aria-label="Site logo"
+        >
+          <div
+            class="w-8 h-8 bg-[#D9E6FB] rounded-lg border-2 border-white flex flex-col items-center justify-center relative"
+          >
+            <div
+              class="w-5 h-5 bg-[#6CA0DC] rounded-full border-2 border-[#3A6EB0]"
+            ></div>
+            <div
+              class="w-9 h-5 bg-[#6CA0DC] rounded-b-full border-2 border-t-0 border-[#3A6EB0] mt-0.5"
+            ></div>
+            <div
+              class="absolute -top-4 left-1/2 -translate-x-1/2 w-6 h-3 bg-[#6CA0DC] rounded-t-full border-2 border-b-0 border-[#3A6EB0]"
+            ></div>
+          </div>
+        </div>
+        <h1 class="text-3xl font-extrabold text-[#1F3A4D] select-none">Browse Items</h1>
+      </div>
+      <div class="flex items-center space-x-4">
+        <button aria-label="Search" class="text-[#3A6EB0] hover:text-[#1F3A4D] transition" title="Search">
+          <i class="fas fa-search fa-lg"></i>
+        </button>
+        <button aria-label="Cart" class="text-[#3A6EB0] hover:text-[#1F3A4D] relative transition" title="Shopping Cart" onclick="location.href='cart.html'">
+          <i class="fas fa-shopping-cart fa-lg"></i>
+          <span
+            id="cartCount"
+            class="absolute -top-2 -right-2 bg-red-600 text-white rounded-full text-xs w-6 h-6 flex items-center justify-center font-bold badge-pulse"
+            >0</span
+          >
+        </button>
+        <button id="logoutBtn" aria-label="Logout" title="Logout" class="text-white">
+          Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-8 flex-1">
+    <!-- Filters and Search -->
+    <section
+      class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0"
+      role="region"
+      aria-label="Product filters and search"
+    >
+      <div class="flex items-center space-x-3">
+        <label for="category" class="text-[#1F3A4D] font-semibold select-none">Category:</label>
+        <select
+          id="category"
+          aria-controls="itemsGrid"
+          class="border border-[#9CC1E7] rounded-lg px-3 py-2 text-[#1F3A4D] focus:outline-none focus:ring-2 focus:ring-[#9CC1E7]"
+        >
+          <option value="all" selected>All</option>
+          <option value="electronics">Electronics</option>
+          <option value="wearables">Wearables</option>
+          <option value="audio">Audio</option>
+          <option value="fitness">Fitness</option>
+          <option value="gaming">Gaming</option>
+          <option value="home">Home</option>
+          <option value="kitchen">Kitchen</option>
+          <option value="office">Office</option>
+          <option value="outdoor">Outdoor</option>
+          <option value="beauty">Beauty</option>
+          <option value="toys">Toys</option>
+          <option value="books">Books</option>
+          <option value="clothing">Clothing</option>
+          <option value="sports">Sports</option>
+          <option value="automotive">Automotive</option>
+        </select>
+      </div>
+      <div class="flex items-center space-x-3">
+        <label for="sort" class="text-[#1F3A4D] font-semibold select-none">Sort by:</label>
+        <select
+          id="sort"
+          aria-controls="itemsGrid"
+          class="border border-[#9CC1E7] rounded-lg px-3 py-2 text-[#1F3A4D] focus:outline-none focus:ring-2 focus:ring-[#9CC1E7]"
+        >
+          <option value="popularity" selected>Popularity</option>
+          <option value="price-low-high">Price: Low to High</option>
+          <option value="price-high-low">Price: High to Low</option>
+          <option value="newest">Newest</option>
+          <option value="rating-high-low">Rating: High to Low</option>
+        </select>
+      </div>
+      <div class="flex items-center space-x-3 flex-1 sm:flex-none relative">
+        <input
+          type="text"
+          id="searchInput"
+          aria-label="Search products"
+          placeholder="Search products..."
+          class="w-full sm:w-72 border border-[#9CC1E7] rounded-lg px-3 py-2 text-[#1F3A4D] focus:outline-none focus:ring-2 focus:ring-[#9CC1E7]"
+        />
+        <button
+          id="clearSearch"
+          class="text-[#3A6EB0] hover:text-[#1F3A4D] font-semibold absolute right-2 top-1/2 -translate-y-1/2 hidden"
+          title="Clear search"
+          aria-label="Clear search"
+          type="button"
+        >
+          <i class="fas fa-times-circle fa-lg"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- Items Grid -->
+    <section
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+      id="itemsGrid"
+      role="list"
+      aria-live="polite"
+      aria-relevant="additions removals"
+    >
+      <!-- Items rendered by JS -->
+    </section>
+  </main>
+
+  <div id="toast" role="alert" aria-live="assertive" aria-atomic="true"></div>
+
+  <script>
+    const products = [
+      {
+        id: 1,
+        name: "Wireless Headphones",
+        price: 89.99,
+        category: "audio",
+        image:
+          "headphone.jpg",
+        rating: 4.5,
+        reviews: 120,
+        description:
+          "High-quality wireless headphones with noise cancellation and long battery life.",
+        stock: 15,
+        features: ["Noise Cancellation", "Bluetooth 5.0", "20h Battery Life"],
+      },
+      {
+        id: 2,
+        name: "Smart Watch",
+        price: 149.99,
+        category: "wearables",
+        image:
+          "watch.jpg",
+        rating: 4.2,
+        reviews: 85,
+        description:
+          "Smart watch with fitness tracking, heart rate monitor, and customizable watch faces.",
+        stock: 8,
+        features: ["Heart Rate Monitor", "Sleep Tracking", "Water Resistant"],
+      },
+      {
+        id: 3,
+        name: "Bluetooth Speaker",
+        price: 59.99,
+        category: "audio",
+        image:
+          "speaker.jpg",
+        rating: 4.7,
+        reviews: 200,
+        description:
+          "Portable Bluetooth speaker with rich sound and waterproof design.",
+        stock: 0,
+        features: ["Waterproof", "12h Playtime", "Compact Design"],
+      },
+      {
+        id: 4,
+        name: "Fitness Tracker",
+        price: 79.99,
+        category: "fitness",
+        image:
+          "fitness.jpg",
+        rating: 4.0,
+        reviews: 60,
+        description:
+          "Fitness tracker with step counter, sleep monitoring, and calorie tracking.",
+        stock: 25,
+        features: ["Step Counter", "Calorie Tracking", "Sleep Monitor"],
+      },
+      {
+        id: 5,
+        name: "Gaming Mouse",
+        price: 49.99,
+        category: "gaming",
+        image:
+          "mouse.jpg",
+        rating: 4.6,
+        reviews: 150,
+        description:
+          "Ergonomic gaming mouse with customizable DPI and RGB lighting.",
+        stock: 20,
+        features: ["Ergonomic Design", "Custom DPI", "RGB Lighting"],
+      },
+      {
+        id: 6,
+        name: "4K Monitor",
+        price: 399.99,
+        category: "electronics",
+        image:
+          "monitor.jpg",
+        rating: 4.8,
+        reviews: 95,
+        description:
+          "Ultra HD 4K monitor with vibrant colors and fast refresh rate.",
+        stock: 10,
+        features: ["3840x2160 Resolution", "144Hz Refresh Rate", "IPS Panel"],
+      },
+      {
+        id: 7,
+        name: "Smart Thermostat",
+        price: 129.99,
+        category: "home",
+        image:
+          "smart.jpg",
+        rating: 4.3,
+        reviews: 70,
+        description:
+          "Smart thermostat with remote control and energy-saving features.",
+        stock: 12,
+        features: ["Remote Control", "Energy Saving", "Easy Installation"],
+      },
+      {
+        id: 8,
+        name: "Wireless Charger",
+        price: 29.99,
+        category: "electronics",
+        image:
+          "charger.jpg",
+        rating: 4.1,
+        reviews: 110,
+        description:
+          "Fast wireless charger compatible with all Qi-enabled devices.",
+        stock: 30,
+        features: ["Fast Charging", "Qi Compatible", "Compact Design"],
+      },
+      {
+        id: 9,
+        name: "Outdoor Tent",
+        price: 199.99,
+        category: "outdoor",
+        image:
+          "tent1.jpg",
+        rating: 4.4,
+        reviews: 45,
+        description:
+          "Durable outdoor tent with waterproof fabric and easy setup.",
+        stock: 7,
+        features: ["Waterproof", "Easy Setup", "Lightweight"],
+      },
+      {
+        id: 10,
+        name: "Electric Toothbrush",
+        price: 59.99,
+        category: "beauty",
+        image:
+          "toothbrush1.jpg",
+        rating: 4.5,
+        reviews: 80,
+        description:
+          "Rechargeable electric toothbrush with multiple cleaning modes.",
+        stock: 18,
+        features: ["Rechargeable", "Multiple Modes", "Timer"],
+      },
+      {
+        id: 11,
+        name: "Kids Building Blocks",
+        price: 39.99,
+        category: "toys",
+        image:
+          "blocks.jpg",
+        rating: 4.7,
+        reviews: 150,
+        description:
+          "Colorful building blocks set for kids to enhance creativity.",
+        stock: 25,
+        features: ["Non-toxic", "Educational", "Durable"],
+      },
+      {
+        id: 12,
+        name: "Office Chair",
+        price: 149.99,
+        category: "office",
+        image:
+          "chair1.jpg",
+        rating: 4.3,
+        reviews: 60,
+        description:
+          "Ergonomic office chair with adjustable height and lumbar support.",
+        stock: 14,
+        features: ["Ergonomic", "Adjustable Height", "Lumbar Support"],
+      },
+      {
+        id: 13,
+        name: "Yoga Mat",
+        price: 29.99,
+        category: "sports",
+        image:
+          "yoga1.jpg",
+        rating: 4.6,
+        reviews: 90,
+        description:
+          "Non-slip yoga mat with extra cushioning for comfort.",
+        stock: 20,
+        features: ["Non-slip", "Extra Cushioning", "Lightweight"],
+      },
+      {
+        id: 14,
+        name: "Electric Kettle",
+        price: 49.99,
+        category: "kitchen",
+        image:
+          "kettle1.jpg",
+        rating: 4.4,
+        reviews: 75,
+        description:
+          "Fast boiling electric kettle with auto shut-off feature.",
+        stock: 18,
+        features: ["Fast Boil", "Auto Shut-off", "Stainless Steel"],
+      },
+      {
+        id: 15,
+        name: "Running Shoes",
+        price: 89.99,
+        category: "clothing",
+        image:
+          "shoes1.jpg",
+        rating: 4.5,
+        reviews: 110,
+        description:
+          "Lightweight running shoes with breathable mesh and cushioned sole.",
+        stock: 22,
+        features: ["Lightweight", "Breathable Mesh", "Cushioned Sole"],
+      },
+      {
+        id: 16,
+        name: "Car Vacuum Cleaner",
+        price: 59.99,
+        category: "automotive",
+        image:
+          "vacuum1.jpg",
+        rating: 4.3,
+        reviews: 50,
+        description:
+          "Portable car vacuum cleaner with strong suction and multiple attachments.",
+        stock: 15,
+        features: ["Strong Suction", "Multiple Attachments", "Portable"],
+      },
+      {
+        id: 17,
+        name: "Wireless Earbuds",
+        price: 79.99,
+        category: "audio",
+        image:
+          "earbuds.jpg",
+        rating: 4.4,
+        reviews: 130,
+        description:
+          "Compact wireless earbuds with high-quality sound and long battery life.",
+        stock: 20,
+        features: ["Bluetooth 5.0", "Noise Isolation", "Charging Case"],
+      },
+      {
+        id: 18,
+        name: "Smartphone Gimbal",
+        price: 99.99,
+        category: "electronics",
+        image:
+          "gimbal1.jpg",
+        rating: 4.5,
+        reviews: 80,
+        description:
+          "3-axis smartphone gimbal stabilizer for smooth video recording.",
+        stock: 12,
+        features: ["3-axis Stabilization", "Lightweight", "Long Battery Life"],
+      },
+      {
+        id: 19,
+        name: "Electric Scooter",
+        price: 499.99,
+        category: "outdoor",
+        image:
+          "scooter1.jpg",
+        rating: 4.6,
+        reviews: 60,
+        description:
+          "Foldable electric scooter with long range and fast charging.",
+        stock: 8,
+        features: ["Foldable", "Long Range", "Fast Charging"],
+      },
+      {
+        id: 20,
+        name: "Gaming Headset",
+        price: 69.99,
+        category: "gaming",
+        image:
+          "headset1.jpg",
+        rating: 4.3,
+        reviews: 110,
+        description:
+          "Surround sound gaming headset with noise-cancelling microphone.",
+        stock: 18,
+        features: ["Surround Sound", "Noise-Cancelling Mic", "Comfortable"],
+      },
+      {
+        id: 21,
+        name: "LED Desk Lamp",
+        price: 39.99,
+        category: "office",
+        image:
+          "lamp.jpg",
+        rating: 4.2,
+        reviews: 90,
+        description:
+          "Adjustable LED desk lamp with touch control and multiple brightness levels.",
+        stock: 25,
+        features: ["Adjustable", "Touch Control", "Energy Efficient"],
+      },
+      {
+        id: 22,
+        name: "Portable Projector",
+        price: 299.99,
+        category: "electronics",
+        image:
+          "portable1.jpg",
+        rating: 4.4,
+        reviews: 70,
+        description:
+          "Compact portable projector with HD resolution and built-in speakers.",
+        stock: 10,
+        features: ["HD Resolution", "Built-in Speakers", "Compact Design"],
+      },
+      {
+        id: 23,
+        name: "Smart Doorbell",
+        price: 129.99,
+        category: "home",
+        image:
+          "doorbell1.jpg",
+        rating: 4.5,
+        reviews: 55,
+        description:
+          "Smart doorbell with video camera, motion detection, and app alerts.",
+        stock: 14,
+        features: ["Video Camera", "Motion Detection", "App Alerts"],
+      },
+      {
+        id: 24,
+        name: "Electric Grill",
+        price: 89.99,
+        category: "kitchen",
+        image:
+          "grill1.jpg",
+        rating: 4.3,
+        reviews: 65,
+        description:
+          "Indoor electric grill with non-stick surface and adjustable temperature.",
+        stock: 20,
+        features: ["Non-stick Surface", "Adjustable Temp", "Easy Clean"],
+      }
+    ];
+
+    const itemsGrid = document.getElementById("itemsGrid");
+    const categorySelect = document.getElementById("category");
+    const sortSelect = document.getElementById("sort");
+    const searchInput = document.getElementById("searchInput");
+    const clearSearchBtn = document.getElementById("clearSearch");
+    const cartCount = document.getElementById("cartCount");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const toast = document.getElementById("toast");
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || {};
+
+    function renderStars(rating) {
+      const fullStars = Math.floor(rating);
+      const halfStar = rating % 1 >= 0.5;
+      let starsHtml = "";
+      for (let i = 0; i < fullStars; i++) {
+        starsHtml +=
+          '<i class="fas fa-star text-yellow-400 mr-0.5" aria-hidden="true"></i>';
+      }
+      if (halfStar) {
+        starsHtml +=
+          '<i class="fas fa-star-half-alt text-yellow-400 mr-0.5" aria-hidden="true"></i>';
+      }
+      const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+      for (let i = 0; i < emptyStars; i++) {
+        starsHtml +=
+          '<i class="far fa-star text-yellow-400 mr-0.5" aria-hidden="true"></i>';
+      }
+      return starsHtml;
+    }
+
+    function updateCartCount() {
+      const count = Object.values(cart).reduce((a, b) => a + b, 0);
+      cartCount.textContent = count;
+      cartCount.style.display = count > 0 ? "flex" : "none";
+    }
+
+    function saveCart() {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3000);
+    }
+
+    function renderProducts() {
+      const category = categorySelect.value;
+      const sort = sortSelect.value;
+      const searchTerm = searchInput.value.trim().toLowerCase();
+
+      let filtered = products.filter((p) =>
+        (category === "all" ? true : p.category === category) &&
+        (p.name.toLowerCase().includes(searchTerm) ||
+          p.description.toLowerCase().includes(searchTerm) ||
+          p.features.some(f => f.toLowerCase().includes(searchTerm)))
+      );
+
+      if (sort === "price-low-high") {
+        filtered.sort((a, b) => a.price - b.price);
+      } else if (sort === "price-high-low") {
+        filtered.sort((a, b) => b.price - a.price);
+      } else if (sort === "newest") {
+        filtered.sort((a, b) => b.id - a.id);
+      } else if (sort === "popularity") {
+        filtered.sort((a, b) => b.reviews - a.reviews);
+      } else if (sort === "rating-high-low") {
+        filtered.sort((a, b) => b.rating - a.rating);
+      }
+
+      if (filtered.length === 0) {
+        itemsGrid.innerHTML = `<p class="col-span-full text-center text-[#5F6C72] text-lg mt-12">No products found matching your criteria.</p>`;
+        return;
+      }
+
+      itemsGrid.innerHTML = filtered
+        .map(
+          (p) => `
+        <article class="bg-white rounded-lg shadow-md p-5 flex flex-col relative hover:shadow-xl transition-shadow" role="listitem" tabindex="0" aria-label="${p.name}, $${p.price.toFixed(
+            2
+          )}, rating ${p.rating} stars, ${p.stock > 0 ? "In stock" : "Out of stock"}">
+          <img
+            alt="${p.name} product image"
+            class="w-full h-52 object-cover rounded-md mb-4"
+            src="${p.image}"
+            width="300"
+            height="300"
+            loading="lazy"
+          />
+          <h3 class="text-[#1F3A4D] font-semibold text-lg mb-1 tooltip">
+            ${p.name}
+            <div class="tooltip-text">${p.description}</div>
+          </h3>
+          <div class="flex items-center mb-2" aria-label="Rating: ${p.rating} out of 5 stars">
+            <div class="flex">${renderStars(p.rating)}</div>
+            <span class="text-sm text-[#5F6C72] ml-2">(${p.reviews} reviews)</span>
+          </div>
+          <p class="text-[#3A6EB0] font-bold text-xl mb-3">$${p.price.toFixed(
+            2
+          )}</p>
+          <ul class="mb-4 text-[#5F6C72] text-sm space-y-1 list-disc list-inside" aria-label="Key features">
+            ${p.features
+              .map(
+                (feature) =>
+                  `<li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2" aria-hidden="true"></i>${feature}</li>`
+              )
+              .join("")}
+          </ul>
+          <button
+            class="mt-auto ${
+              p.stock > 0
+                ? "bg-[#3A6EB0] hover:bg-[#2a5490] cursor-pointer"
+                : "bg-gray-400 cursor-not-allowed"
+            } text-white py-3 rounded-lg font-semibold transition focus:outline-none focus:ring-4 focus:ring-[#6CA0DC] add-to-cart-btn"
+            type="button"
+            ${p.stock === 0 ? "disabled" : ""}
+            data-product-id="${p.id}"
+            aria-disabled="${p.stock === 0}"
+            aria-label="${p.stock > 0 ? `Add ${p.name} to cart` : `${p.name} out of stock`}"
+          >
+            ${p.stock > 0 ? "Add to Cart" : "Out of Stock"}
+          </button>
+          ${
+            p.stock > 0
+              ? `<span class="absolute top-3 right-3 bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full select-none" aria-label="In stock: ${p.stock}">${p.stock} left</span>`
+              : `<span class="absolute top-3 right-3 bg-red-100 text-red-700 text-xs font-semibold px-3 py-1 rounded-full select-none" aria-label="Out of stock">Out of Stock</span>`
+          }
+        </article>
+      `
+        )
+        .join("");
+      attachAddToCartListeners();
+    }
+
+    function attachAddToCartListeners() {
+      document.querySelectorAll(".add-to-cart-btn").forEach((button) => {
+        button.addEventListener("click", () => {
+          if (button.disabled) return;
+          const productId = button.getAttribute("data-product-id");
+          const product = products.find((p) => p.id == productId);
+          if (!product || product.stock === 0) return;
+
+          // Decrease stock
+          product.stock--;
+
+          // Add to cart count
+          if (cart[productId]) {
+            cart[productId]++;
+          } else {
+            cart[productId] = 1;
+          }
+
+          saveCart();
+          updateCartCount();
+          renderProducts();
+
+          // Show toast notification
+          showToast(`${product.name} added to cart!`);
+        });
+      });
+    }
+
+    logoutBtn.addEventListener("click", () => {
+      // Clear cart and redirect to login page or homepage
+      localStorage.removeItem("cart");
+      window.location.href = "login.html";
+    });
+
+    categorySelect.addEventListener("change", renderProducts);
+    sortSelect.addEventListener("change", renderProducts);
+    searchInput.addEventListener("input", () => {
+      clearSearchBtn.style.display = searchInput.value.trim() ? "inline" : "none";
+      renderProducts();
+    });
+    clearSearchBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      clearSearchBtn.style.display = "none";
+      renderProducts();
+      searchInput.focus();
+    });
+
+    // Initialize
+    updateCartCount();
+    renderProducts();
+  </script>
+</body>
+</html>

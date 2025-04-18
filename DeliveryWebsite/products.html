@@ -1,0 +1,414 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   Products - Ecommerce Dashboard
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+  <style>
+   body {
+      font-family: 'Inter', sans-serif;
+    }
+   nav::-webkit-scrollbar, section::-webkit-scrollbar {
+     width: 8px;
+   }
+   nav::-webkit-scrollbar-track, section::-webkit-scrollbar-track {
+     background: #f1f5f9;
+     border-radius: 4px;
+   }
+   nav::-webkit-scrollbar-thumb, section::-webkit-scrollbar-thumb {
+     background-color: #cbd5e1;
+     border-radius: 4px;
+   }
+   nav::-webkit-scrollbar-thumb:hover, section::-webkit-scrollbar-thumb:hover {
+     background-color: #94a3b8;
+   }
+  </style>
+ </head>
+ <body class="bg-[#f7f8f3] text-[#1e293b] min-h-screen flex flex-col">
+  <header class="bg-white shadow-md sticky top-0 z-40 transition-shadow duration-300 hover:shadow-lg">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-14">
+     <div class="flex items-center space-x-3 cursor-pointer select-none group">
+      <img alt="Ecommerce logo icon, blue backpack icon" class="w-8 h-8 transform transition-transform duration-300 group-hover:rotate-12" height="32" src="https://storage.googleapis.com/a1aa/image/9044a6b1-88c0-4ded-2670-5f264f653131.jpg" width="32"/>
+      <span class="font-semibold text-[#1e293b] text-lg tracking-wide">
+       Ecommerce Dashboard
+      </span>
+     </div>
+     <div class="flex items-center space-x-6">
+      <button aria-label="Notifications" class="text-[#475569] hover:text-[#1e293b] transition-colors duration-300 relative group">
+       <i class="fas fa-bell fa-lg">
+       </i>
+       <span class="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-red-500 ring-2 ring-white animate-pulse">
+       </span>
+      </button>
+      <button aria-label="User profile" class="text-[#475569] hover:text-[#1e293b] transition-colors duration-300">
+       <i class="fas fa-user-circle fa-lg">
+       </i>
+      </button>
+      <a class="bg-red-600 hover:bg-red-700 text-white font-semibold text-sm rounded-lg px-5 py-2 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1" href="index.html">
+       Logout
+      </a>
+     </div>
+    </div>
+   </div>
+  </header>
+  <main class="flex flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 mb-6 space-x-6 overflow-x-hidden">
+   <nav aria-label="Sidebar" class="bg-white rounded-lg shadow-lg w-60 flex-shrink-0 overflow-y-auto max-h-[calc(100vh-96px)] scrollbar-thin scrollbar-thumb-[#cbd5e1] scrollbar-track-[#f1f5f9] transition-shadow duration-300 hover:shadow-xl">
+    <ul class="py-6 space-y-3 text-sm font-medium text-[#475569]">
+     <li>
+      <a class="flex items-center space-x-3 px-6 py-3 hover:text-[#1e293b] transition-colors duration-300 rounded-lg hover:bg-[#f1f5f9]" href="dashboard.html">
+       <i class="fas fa-tachometer-alt text-[#64748b] text-lg">
+       </i>
+       <span>
+        Dashboard
+       </span>
+      </a>
+     </li>
+     <li>
+      <a class="flex items-center space-x-3 px-6 py-3 text-[#1e293b] font-semibold rounded-lg bg-[#f1f5f9] shadow-inner shadow-[#e2e8f0]" href="#">
+       <i class="fas fa-box-open text-[#475569] text-lg">
+       </i>
+       <span>
+        Products
+       </span>
+      </a>
+     </li>
+     <li>
+      <a class="flex items-center space-x-3 px-6 py-3 hover:text-[#1e293b] transition-colors duration-300 rounded-lg hover:bg-[#f1f5f9]" href="orders.html">
+       <i class="fas fa-shopping-cart text-[#64748b] text-lg">
+       </i>
+       <span>
+        Orders
+       </span>
+      </a>
+     </li>
+     <li>
+      <a class="flex items-center space-x-3 px-6 py-3 hover:text-[#1e293b] transition-colors duration-300 rounded-lg hover:bg-[#f1f5f9]" href="customers.html">
+       <i class="fas fa-users text-[#64748b] text-lg">
+       </i>
+       <span>
+        Customers
+       </span>
+      </a>
+     </li>
+     <li>
+      <a class="flex items-center space-x-3 px-6 py-3 hover:text-[#1e293b] transition-colors duration-300 rounded-lg hover:bg-[#f1f5f9]" href="analytics.html">
+       <i class="fas fa-chart-line text-[#64748b] text-lg">
+       </i>
+       <span>
+        Analytics
+       </span>
+      </a>
+     </li>
+     <li>
+      <a class="flex items-center space-x-3 px-6 py-3 hover:text-[#1e293b] transition-colors duration-300 rounded-lg hover:bg-[#f1f5f9]" href="settings.html">
+       <i class="fas fa-cog text-[#64748b] text-lg">
+       </i>
+       <span>
+        Settings
+       </span>
+      </a>
+     </li>
+    </ul>
+   </nav>
+   <section class="flex-1 flex flex-col space-y-6 overflow-y-auto max-h-[calc(100vh-96px)] pr-2 scrollbar-thin scrollbar-thumb-[#cbd5e1] scrollbar-track-[#f1f5f9]">
+    <div class="flex justify-between items-center">
+     <h1 class="text-2xl font-semibold text-[#1e293b] tracking-wide">
+      Products
+     </h1>
+     <button id="openModalBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm rounded-lg px-5 py-2 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1">
+      Add New Product
+     </button>
+    </div>
+    <div class="bg-white rounded-xl shadow-lg p-6 overflow-x-auto transition-shadow duration-300 hover:shadow-2xl">
+     <table class="w-full text-left text-sm text-[#475569] border-separate border-spacing-y-3" id="productsTable">
+      <thead>
+       <tr class="border-b border-[#e2e8f0]">
+        <th class="pb-3 pr-8 font-normal tracking-wide">
+         #
+        </th>
+        <th class="pb-3 pr-8 font-normal tracking-wide">
+         Product
+        </th>
+        <th class="pb-3 pr-8 font-normal tracking-wide">
+         Category
+        </th>
+        <th class="pb-3 pr-8 font-normal tracking-wide">
+         Price
+        </th>
+        <th class="pb-3 pr-8 font-normal tracking-wide">
+         Stock
+        </th>
+        <th class="pb-3 font-normal tracking-wide">
+         Actions
+        </th>
+       </tr>
+      </thead>
+      <tbody id="productsTbody">
+       <!-- Existing products will be loaded here -->
+      </tbody>
+     </table>
+    </div>
+   </section>
+  </main>
+
+  <!-- Modal backdrop -->
+  <div id="modalBackdrop" class="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+   <!-- Modal -->
+   <div class="bg-white rounded-xl shadow-lg max-w-md w-full p-6 relative">
+    <h2 class="text-xl font-semibold text-[#1e293b] mb-4" id="modalTitle">
+     Add New Product
+    </h2>
+    <form id="productForm" class="space-y-4" enctype="multipart/form-data">
+     <div>
+      <label class="block text-sm font-medium text-[#475569] mb-1" for="productName">
+       Product Name
+      </label>
+      <input class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" id="productName" name="productName" required="" type="text"/>
+     </div>
+     <div>
+      <label class="block text-sm font-medium text-[#475569] mb-1" for="category">
+       Category
+      </label>
+      <select class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" id="category" name="category" required="">
+       <option value="" disabled selected>Select category</option>
+       <option value="Bags">Bags</option>
+       <option value="Electronics">Electronics</option>
+       <option value="Footwear">Footwear</option>
+       <option value="Kitchen">Kitchen</option>
+       <option value="Clothing">Clothing</option>
+       <option value="Accessories">Accessories</option>
+      </select>
+     </div>
+     <div>
+      <label class="block text-sm font-medium text-[#475569] mb-1" for="price">
+       Price ($)
+      </label>
+      <input class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" id="price" min="0" name="price" required="" step="0.01" type="number"/>
+     </div>
+     <div>
+      <label class="block text-sm font-medium text-[#475569] mb-1" for="stock">
+       Stock Quantity
+      </label>
+      <input class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" id="stock" min="0" name="stock" required="" type="number"/>
+     </div>
+     <div>
+      <label class="block text-sm font-medium text-[#475569] mb-1" for="imageFile">
+       Insert Image
+      </label>
+      <input accept="image/*" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition" id="imageFile" name="imageFile" type="file"/>
+      <p class="text-xs text-gray-500 mt-1">Leave empty to keep existing image when editing.</p>
+     </div>
+     <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+      <button type="button" id="cancelBtn" class="px-4 py-2 rounded-md bg-gray-200 text-gray-700 font-semibold hover:bg-gray-300 transition">
+       Cancel
+      </button>
+      <button type="submit" class="px-4 py-2 rounded-md bg-blue-600 text-white font-semibold hover:bg-blue-700 transition" id="submitBtn">
+       Add Product
+      </button>
+     </div>
+    </form>
+   </div>
+  </div>
+
+  <script>
+   // Local Storage Key
+   const STORAGE_KEY = 'ecommerce_products';
+
+   // Elements
+   const openModalBtn = document.getElementById('openModalBtn');
+   const modalBackdrop = document.getElementById('modalBackdrop');
+   const cancelBtn = document.getElementById('cancelBtn');
+   const productForm = document.getElementById('productForm');
+   const productsTbody = document.getElementById('productsTbody');
+   const imageFileInput = document.getElementById('imageFile');
+   const modalTitle = document.getElementById('modalTitle');
+   const submitBtn = document.getElementById('submitBtn');
+   const categorySelect = document.getElementById('category');
+
+   let editMode = false;
+   let editIndex = null;
+   let products = [];
+
+   // Load products from localStorage
+   function loadProducts() {
+     const stored = localStorage.getItem(STORAGE_KEY);
+     if (stored) {
+       products = JSON.parse(stored);
+     } else {
+       // Initial sample products
+       products = [
+         {
+           name: "Blue Backpack",
+           category: "Bags",
+           price: 49.99,
+           stock: 120,
+           imageUrl: "https://storage.googleapis.com/a1aa/image/73efef2a-9d7c-4fc8-8c49-ffbbde7f9f5a.jpg"
+         },
+         {
+           name: "Wireless Headphones",
+           category: "Electronics",
+           price: 89.99,
+           stock: 45,
+           imageUrl: "https://storage.googleapis.com/a1aa/image/b40e0298-2c22-4720-35b1-e64fa3da85ab.jpg"
+         }
+       ];
+       saveProducts();
+     }
+   }
+
+   // Save products to localStorage
+   function saveProducts() {
+     localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+   }
+
+   // Render products table
+   function renderProducts() {
+     productsTbody.innerHTML = '';
+     products.forEach((product, index) => {
+       const tr = document.createElement('tr');
+       tr.className = 'bg-[#f9fafb] rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 cursor-pointer';
+
+       tr.innerHTML = `
+         <td class="py-4 font-semibold text-[#1e293b] pl-4 rounded-l-lg w-10">${index + 1}</td>
+         <td class="py-4 flex items-center space-x-3">
+           <img alt="${product.name} product image" class="w-12 h-12 rounded-md object-cover shadow-sm" src="${product.imageUrl}" loading="lazy" />
+           <span class="font-medium text-[#1e293b]">${product.name}</span>
+         </td>
+         <td class="py-4">${product.category}</td>
+         <td class="py-4 font-semibold text-[#1e40af]">$${product.price.toFixed(2)}</td>
+         <td class="py-4">${product.stock}</td>
+         <td class="py-4 pr-4 space-x-3 rounded-r-lg">
+           <button aria-label="Edit ${product.name}" class="text-blue-600 hover:text-blue-800 transition-colors duration-300 edit-btn">
+             <i class="fas fa-edit"></i>
+           </button>
+           <button aria-label="Delete ${product.name}" class="text-red-600 hover:text-red-800 transition-colors duration-300 delete-btn">
+             <i class="fas fa-trash-alt"></i>
+           </button>
+         </td>
+       `;
+
+       productsTbody.appendChild(tr);
+       attachRowEvents(tr, index);
+     });
+   }
+
+   // Attach edit and delete events to a row
+   function attachRowEvents(row, index) {
+     const editBtn = row.querySelector('.edit-btn');
+     const deleteBtn = row.querySelector('.delete-btn');
+
+     editBtn.addEventListener('click', (e) => {
+       e.stopPropagation();
+       editMode = true;
+       editIndex = index;
+       modalTitle.textContent = 'Edit Product';
+       submitBtn.textContent = 'Save Changes';
+
+       const product = products[index];
+       productForm.productName.value = product.name;
+       categorySelect.value = product.category;
+       productForm.price.value = product.price;
+       productForm.stock.value = product.stock;
+       imageFileInput.value = '';
+       imageFileInput.required = false;
+
+       modalBackdrop.classList.remove('hidden');
+     });
+
+     deleteBtn.addEventListener('click', (e) => {
+       e.stopPropagation();
+       if (confirm('Are you sure you want to delete this product?')) {
+         products.splice(index, 1);
+         saveProducts();
+         renderProducts();
+       }
+     });
+   }
+
+   // Open modal for adding new product
+   openModalBtn.addEventListener('click', () => {
+     editMode = false;
+     editIndex = null;
+     modalTitle.textContent = 'Add New Product';
+     submitBtn.textContent = 'Add Product';
+     productForm.reset();
+     imageFileInput.required = true;
+     modalBackdrop.classList.remove('hidden');
+   });
+
+   // Close modal
+   cancelBtn.addEventListener('click', () => {
+     modalBackdrop.classList.add('hidden');
+   });
+
+   // Close modal on backdrop click (but not on modal content click)
+   modalBackdrop.addEventListener('click', (e) => {
+     if (e.target === modalBackdrop) {
+       modalBackdrop.classList.add('hidden');
+     }
+   });
+
+   // Add or Edit product
+   productForm.addEventListener('submit', (e) => {
+     e.preventDefault();
+
+     const name = productForm.productName.value.trim();
+     const category = productForm.category.value;
+     const price = parseFloat(productForm.price.value);
+     const stock = parseInt(productForm.stock.value);
+     const imageFile = imageFileInput.files[0];
+
+     if (!name || !category || isNaN(price) || isNaN(stock) || (!editMode && !imageFile)) {
+       alert('Please fill in all fields correctly.');
+       return;
+     }
+
+     function updateProduct(imageUrl) {
+       if (editMode && editIndex !== null) {
+         // Update existing product
+         products[editIndex] = {
+           name,
+           category,
+           price,
+           stock,
+           imageUrl
+         };
+       } else {
+         // Add new product
+         products.push({
+           name,
+           category,
+           price,
+           stock,
+           imageUrl
+         });
+       }
+       saveProducts();
+       renderProducts();
+       modalBackdrop.classList.add('hidden');
+     }
+
+     if (imageFile) {
+       const reader = new FileReader();
+       reader.onload = function(event) {
+         updateProduct(event.target.result);
+       };
+       reader.readAsDataURL(imageFile);
+     } else if (editMode && editIndex !== null) {
+       // Keep existing image if no new image selected
+       updateProduct(products[editIndex].imageUrl);
+     }
+   });
+
+   // Initial load
+   loadProducts();
+   renderProducts();
+  </script>
+ </body>
+</html>

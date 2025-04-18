@@ -1,0 +1,200 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   Analytics - Ecommerce Dashboard
+  </title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+  <style>
+   body {
+     font-family: 'Inter', sans-serif;
+   }
+   nav::-webkit-scrollbar, section::-webkit-scrollbar {
+     width: 8px;
+   }
+   nav::-webkit-scrollbar-track, section::-webkit-scrollbar-track {
+     background: #f1f5f9;
+     border-radius: 4px;
+   }
+   nav::-webkit-scrollbar-thumb, section::-webkit-scrollbar-thumb {
+     background-color: #cbd5e1;
+     border-radius: 4px;
+   }
+   nav::-webkit-scrollbar-thumb:hover, section::-webkit-scrollbar-thumb:hover {
+     background-color: #94a3b8;
+   }
+  </style>
+ </head>
+ <body class="bg-[#f7f8f3] text-[#1e293b] min-h-screen flex flex-col">
+  <header class="bg-white shadow-md sticky top-0 z-40 transition-shadow duration-300 hover:shadow-lg">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-14">
+     <div class="flex items-center space-x-3 cursor-pointer select-none group">
+      <img alt="Ecommerce logo icon, blue backpack icon" class="w-8 h-8 transform transition-transform duration-300 group-hover:rotate-12" height="32" src="https://storage.googleapis.com/a1aa/image/9044a6b1-88c0-4ded-2670-5f264f653131.jpg" width="32"/>
+      <span class="font-semibold text-[#1e293b] text-lg tracking-wide">
+       Ecommerce Dashboard
+      </span>
+     </div>
+     <div class="flex items-center space-x-6">
+      <button aria-label="Notifications" class="text-[#475569] hover:text-[#1e293b] transition-colors duration-300 relative group">
+       <i class="fas fa-bell fa-lg"></i>
+       <span class="absolute top-0 right-0 block w-2.5 h-2.5 rounded-full bg-red-500 ring-2 ring-white animate-pulse"></span>
+      </button>
+      <button aria-label="User profile" class="text-[#475569] hover:text-[#1e293b] transition-colors duration-300">
+       <i class="fas fa-user-circle fa-lg"></i>
+      </button>
+      <a class="bg-red-600 hover:bg-red-700 text-white font-semibold text-sm rounded-lg px-5 py-2 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1" href="index.html">
+       Logout
+      </a>
+     </div>
+    </div>
+   </div>
+  </header>
+  <main class="flex flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 mb-6 space-x-6 overflow-x-hidden">
+   <nav aria-label="Sidebar" class="bg-white rounded-lg shadow-lg w-60 flex-shrink-0 overflow-y-auto max-h-[calc(100vh-96px)] scrollbar-thin scrollbar-thumb-[#cbd5e1] scrollbar-track-[#f1f5f9] transition-shadow duration-300 hover:shadow-xl">
+    <ul class="py-6 space-y-3 text-sm font-medium text-[#475569]">
+     <li>
+      <a class="flex items-center space-x-3 px-6 py-3 hover:text-[#1e293b] transition-colors duration-300 rounded-lg hover:bg-[#f1f5f9]" href="dashboard.html">
+       <i class="fas fa-tachometer-alt text-[#64748b] text-lg"></i>
+       <span>Dashboard</span>
+      </a>
+     </li>
+     <li>
+      <a class="flex items-center space-x-3 px-6 py-3 hover:text-[#1e293b] transition-colors duration-300 rounded-lg hover:bg-[#f1f5f9]" href="products.html">
+       <i class="fas fa-box-open text-[#64748b] text-lg"></i>
+       <span>Products</span>
+      </a>
+     </li>
+     <li>
+      <a class="flex items-center space-x-3 px-6 py-3 hover:text-[#1e293b] transition-colors duration-300 rounded-lg hover:bg-[#f1f5f9]" href="orders.html">
+       <i class="fas fa-shopping-cart text-[#64748b] text-lg"></i>
+       <span>Orders</span>
+      </a>
+     </li>
+     <li>
+      <a class="flex items-center space-x-3 px-6 py-3 hover:text-[#1e293b] transition-colors duration-300 rounded-lg hover:bg-[#f1f5f9]" href="customers.html">
+       <i class="fas fa-users text-[#64748b] text-lg"></i>
+       <span>Customers</span>
+      </a>
+     </li>
+     <li>
+      <a class="flex items-center space-x-3 px-6 py-3 text-[#1e293b] font-semibold rounded-lg bg-[#f1f5f9] shadow-inner shadow-[#e2e8f0]" href="#">
+       <i class="fas fa-chart-line text-[#475569] text-lg"></i>
+       <span>Analytics</span>
+      </a>
+     </li>
+     <li>
+      <a class="flex items-center space-x-3 px-6 py-3 hover:text-[#1e293b] transition-colors duration-300 rounded-lg hover:bg-[#f1f5f9]" href="settings.html">
+       <i class="fas fa-cog text-[#64748b] text-lg"></i>
+       <span>Settings</span>
+      </a>
+     </li>
+    </ul>
+   </nav>
+   <section class="flex-1 flex flex-col space-y-6 overflow-y-auto max-h-[calc(100vh-96px)] pr-2 scrollbar-thin scrollbar-thumb-[#cbd5e1] scrollbar-track-[#f1f5f9]">
+    <h1 class="text-2xl font-semibold text-[#1e293b] tracking-wide">
+     Analytics
+    </h1>
+    <div class="bg-white rounded-xl shadow-lg p-6 transition-shadow duration-300 hover:shadow-2xl">
+     <h2 class="text-lg font-semibold text-[#1e293b] mb-4">
+      Sales Over Last 6 Months
+     </h2>
+     <canvas id="salesChart" class="w-full h-64"></canvas>
+    </div>
+    <div class="bg-white rounded-xl shadow-lg p-6 transition-shadow duration-300 hover:shadow-2xl">
+     <h2 class="text-lg font-semibold text-[#1e293b] mb-4">
+      Orders by Status
+     </h2>
+     <canvas id="ordersChart" class="w-full h-64"></canvas>
+    </div>
+   </section>
+  </main>
+  <script>
+   const salesCtx = document.getElementById('salesChart').getContext('2d');
+   const ordersCtx = document.getElementById('ordersChart').getContext('2d');
+
+   const salesChart = new Chart(salesCtx, {
+     type: 'line',
+     data: {
+       labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+       datasets: [{
+         label: 'Sales ($)',
+         data: [12000, 15000, 14000, 18000, 20000, 22000],
+         borderColor: '#3b82f6',
+         backgroundColor: 'rgba(59, 130, 246, 0.2)',
+         fill: true,
+         tension: 0.3,
+         pointRadius: 5,
+         pointHoverRadius: 7,
+         pointBackgroundColor: '#3b82f6',
+         borderWidth: 3
+       }]
+     },
+     options: {
+       responsive: true,
+       plugins: {
+         legend: {
+           labels: {
+             color: '#1e293b',
+             font: {weight: '600', size: 14}
+           }
+         },
+         tooltip: {
+           mode: 'index',
+           intersect: false,
+         }
+       },
+       scales: {
+         x: {
+           ticks: {color: '#475569', font: {size: 13}},
+           grid: {display: false}
+         },
+         y: {
+           ticks: {color: '#475569', font: {size: 13}},
+           grid: {color: '#e2e8f0'}
+         }
+       }
+     }
+   });
+
+   const ordersChart = new Chart(ordersCtx, {
+     type: 'doughnut',
+     data: {
+       labels: ['Completed', 'Pending', 'Cancelled'],
+       datasets: [{
+         label: 'Orders',
+         data: [60, 25, 15],
+         backgroundColor: ['#22c55e', '#facc15', '#ef4444'],
+         hoverOffset: 30,
+         borderWidth: 2,
+         borderColor: '#f7f8f3'
+       }]
+     },
+     options: {
+       responsive: true,
+       plugins: {
+         legend: {
+           position: 'bottom',
+           labels: {
+             color: '#1e293b',
+             font: {weight: '600', size: 14},
+             padding: 20,
+           }
+         },
+         tooltip: {
+           callbacks: {
+             label: function(context) {
+               return context.label + ': ' + context.parsed + '%';
+             }
+           }
+         }
+       }
+     }
+   });
+  </script>
+ </body>
+</html>
